@@ -3,33 +3,38 @@ import './App.css';
 import { Pokemon } from './components/Pokemon';
 import { Random } from './lib/Random';
 
-let count = 0;
 function App() {
-  let [name, setName] = useState('uninit');
-  let [source, setSource] = useState('uninitURL');
+  let [name, setName] = useState('No Pokemon here.');
+  let [source, setSource] = useState('Could not load Pokemon.');
 
-  useEffect(() => {
-    async function fetchPoke() {
-      const pokeResponse = await fetch(
-        'https://pokeapi.co/api/v2/pokemon/905/'
-      );
-      const pokeResponseJSON = await pokeResponse.json();
+  useEffect(
+    () => {
+      async function fetchPoke() {
+        const pokeResponse = await fetch(
+          `https://pokeapi.co/api/v2/pokemon/${Random.getRandomInt(1, 905)}/`
+        );
+        const pokeResponseJSON = await pokeResponse.json();
 
-      console.log(count++);
-      setName(pokeResponseJSON.name);
-      setSource(
-        pokeResponseJSON.sprites.other['official-artwork'].front_default
-      );
+        setName(pokeResponseJSON.name);
+        setSource(
+          pokeResponseJSON.sprites.other['official-artwork'].front_default
+        );
 
-      console.log(await name, await source);
-    }
+        console.log(name, source);
+      }
 
-    fetchPoke();
-  });
+      fetchPoke();
+    },
+    // Empty array is given to run the useEffect function, i.e.,
+    // fetchPoke() only once.
+    // https://stackoverflow.com/questions/53120972/how-to-call-loading-function-with-react-useeffect-only-once/53121021#53121021
+    []
+  );
 
   return (
     <div>
-      <img src={source} alt={name} />
+      {console.log(name, source)}
+      <Pokemon sourceURL={source} caption={name} />
     </div>
   );
 }
