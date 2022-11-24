@@ -4,8 +4,7 @@ import { Pokemon } from './components/Pokemon';
 import { Random } from './lib/Random';
 
 function App() {
-  let [name, setName] = useState('No Pokemon here.');
-  let [source, setSource] = useState('Could not load Pokemon.');
+  const [pokeArray, setPokeArray] = useState([]);
 
   useEffect(
     () => {
@@ -15,15 +14,27 @@ function App() {
         );
         const pokeResponseJSON = await pokeResponse.json();
 
-        setName(pokeResponseJSON.name);
-        setSource(
-          pokeResponseJSON.sprites.other['official-artwork'].front_default
-        );
+        const name = await pokeResponseJSON.name;
+        const source = await pokeResponseJSON.sprites.other['official-artwork']
+          .front_default;
 
         console.log(name, source);
+
+        return { name, source };
       }
 
-      fetchPoke();
+      async function fetchMultiplePoke() {
+        const array = [];
+        for (let i = 0; i < 4; i++) {
+          const poke = await fetchPoke();
+          console.log(poke);
+          array.push(poke);
+          console.log('array:', array);
+        }
+        setPokeArray(array);
+      }
+
+      fetchMultiplePoke();
     },
     // Empty array is given to run the useEffect function, i.e.,
     // fetchPoke() only once.
@@ -33,8 +44,35 @@ function App() {
 
   return (
     <div>
-      {console.log(name, source)}
-      <Pokemon sourceURL={source} caption={name} />
+      {console.log(pokeArray)}
+      {(() => {
+        if (pokeArray.length > 0) {
+          return (
+            <>
+              <Pokemon
+                sourceURL={pokeArray[0].source}
+                caption={pokeArray[0].name}
+                // count={count}
+              />
+              <Pokemon
+                sourceURL={pokeArray[1].source}
+                caption={pokeArray[1].name}
+                // count={count}
+              />
+              <Pokemon
+                sourceURL={pokeArray[2].source}
+                caption={pokeArray[2].name}
+                // count={count}
+              />
+              <Pokemon
+                sourceURL={pokeArray[3].source}
+                caption={pokeArray[3].name}
+                // count={count}
+              />
+            </>
+          );
+        }
+      })()}
     </div>
   );
 }
