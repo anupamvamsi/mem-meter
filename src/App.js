@@ -8,6 +8,8 @@ function App() {
 
   useEffect(
     () => {
+      console.log('mounted / rendered');
+
       async function fetchPoke() {
         const pokeResponse = await fetch(
           `https://pokeapi.co/api/v2/pokemon/${Random.getRandomInt(1, 905)}/`
@@ -18,7 +20,7 @@ function App() {
         const source = await pokeResponseJSON.sprites.other['official-artwork']
           .front_default;
 
-        console.log(name, source);
+        // console.log(name, source);
 
         return { name, source };
       }
@@ -29,9 +31,11 @@ function App() {
           const poke = await fetchPoke();
           console.log(poke);
           array.push(poke);
-          console.log('array:', array);
+          // console.log('array:', array);
         }
+
         setPokeArray(array);
+        console.log('setState - triggering re-render');
       }
 
       fetchMultiplePoke();
@@ -42,9 +46,10 @@ function App() {
     []
   );
 
+  console.log('mounting... / rendering...');
   return (
     <div>
-      {console.log(pokeArray)}
+      {console.log('In render call:', pokeArray)}
       {(() => {
         if (pokeArray.length > 0) {
           return (
