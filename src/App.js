@@ -6,8 +6,11 @@ import { Random } from './lib/Random';
 function App() {
   const [pokeArray, setPokeArray] = useState([]);
 
+  // useEffect is called once <App/> component
+  // has been mounted (componentDidMount)
   useEffect(
     () => {
+      // Called on first mount
       console.log('mounted / rendered');
 
       async function fetchPoke() {
@@ -19,8 +22,6 @@ function App() {
         const name = await pokeResponseJSON.name;
         const source = await pokeResponseJSON.sprites.other['official-artwork']
           .front_default;
-
-        // console.log(name, source);
 
         return { name, source };
       }
@@ -34,6 +35,7 @@ function App() {
           // console.log('array:', array);
         }
 
+        // Triggers re-render on every change of state
         setPokeArray(array);
         console.log('setState - triggering re-render');
       }
@@ -46,6 +48,7 @@ function App() {
     []
   );
 
+  // Called on every render
   console.log('mounting... / rendering...');
   return (
     <div>
