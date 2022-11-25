@@ -3,6 +3,10 @@ import './App.css';
 import { Pokemon } from './components/Pokemon';
 import { Random } from './lib/Random';
 
+// Figure out service worker installation
+// const Pokedex = require('pokeapi-js-wrapper');
+// INSTEAD SAVE AND SERVE FIRST 30 POKEMON FROM YOUR OWN SITE PAGE? no point of API then, just take a random offset and fetch 30 pokemon?
+
 function App() {
   const [pokeArray, setPokeArray] = useState([]);
 
@@ -15,7 +19,7 @@ function App() {
 
       async function fetchPoke() {
         const pokeResponse = await fetch(
-          `https://pokeapi.co/api/v2/pokemon/${Random.getRandomInt(1, 905)}/`
+          `https://pokeapi.co/api/v2/pokemon/${Random.getRandomInt(1, 6)}/`
         );
         const pokeResponseJSON = await pokeResponse.json();
 
