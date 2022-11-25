@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import './App.css';
 import { Pokemon } from './components/Pokemon';
 import { Random } from './lib/Random';
 
@@ -18,14 +17,20 @@ function App() {
       console.log('mounted / rendered');
 
       async function fetchPoke() {
-        const pokeResponse = await fetch(
-          `https://pokeapi.co/api/v2/pokemon/${Random.getRandomInt(1, 6)}/`
-        );
-        const pokeResponseJSON = await pokeResponse.json();
+        let name, source;
+        try {
+          const pokeResponse = await fetch(
+            `https://pokeapi.co/api/v2/pokemon/${Random.getRandomInt(1, 905)}/`
+          );
+          const pokeResponseJSON = await pokeResponse.json();
 
-        const name = await pokeResponseJSON.name;
-        const source = await pokeResponseJSON.sprites.other['official-artwork']
-          .front_default;
+          name = await pokeResponseJSON.name;
+          source = await pokeResponseJSON.sprites.other['official-artwork']
+            .front_default;
+        } catch {
+          name = '???';
+          source = ''; // put a source of ??? Pokemon
+        }
 
         return { name, source };
       }
@@ -36,7 +41,6 @@ function App() {
           const poke = await fetchPoke();
           console.log(poke);
           array.push(poke);
-          // console.log('array:', array);
         }
 
         // Triggers re-render on every change of state
