@@ -1,5 +1,7 @@
+import './styles/general.css';
+import './styles/card.css';
 import { useState, useEffect } from 'react';
-import { Pokemon } from './components/Pokemon';
+import { PokeCard } from './components/Pokemon';
 import { Random } from './lib/Random';
 
 // Figure out service worker installation
@@ -59,36 +61,22 @@ function App() {
   // Called on every render
   console.log('mounting... / rendering...');
   return (
-    <div>
-      {console.log('In render call:', pokeArray)}
-      {(() => {
-        if (pokeArray.length > 0) {
-          return (
-            <>
-              <Pokemon
-                sourceURL={pokeArray[0].source}
-                caption={pokeArray[0].name}
-                // count={count}
-              />
-              <Pokemon
-                sourceURL={pokeArray[1].source}
-                caption={pokeArray[1].name}
-                // count={count}
-              />
-              <Pokemon
-                sourceURL={pokeArray[2].source}
-                caption={pokeArray[2].name}
-                // count={count}
-              />
-              <Pokemon
-                sourceURL={pokeArray[3].source}
-                caption={pokeArray[3].name}
-                // count={count}
-              />
-            </>
-          );
-        }
-      })()}
+    <div className="App">
+      <h1 className="title">Mem-Meter</h1>
+
+      <div className="poke-cards">
+        {console.log('In render call:', pokeArray)}
+        {(() => {
+          if (pokeArray.length === 0) {
+            console.log('NONETHING');
+            return <h2 className="load-text">Loading...</h2>;
+          } else {
+            return pokeArray.map((poke, i) => (
+              <PokeCard sourceURL={poke.source} caption={poke.name} key={i} />
+            ));
+          }
+        })()}
+      </div>
     </div>
   );
 }

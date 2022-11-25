@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;600;700&display=swap');
+
+.poke-cards {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+.load-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 2rem;
+
+  text-align: center;
+
+  color: white;
+}
+
+.poke-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  padding: 4em 2em 0.5em 2em;
+
+  border-radius: 1em;
+
+  background-color: rgb(255, 255, 73);
+}
+
+.pc-image {
+  width: 12em;
+}
+
+.pc-caption {
+  font-size: 1.5rem;
+  font-weight: 600;
+
+  text-align: center;
+  text-transform: capitalize;
+}

@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Days+One&family=Rubik+Mono+One&family=Syncopate:wght@700&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+
+  font-family: 'Mukta', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: rgb(26, 26, 26);
+}
+
+.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-family: 'Days One', 'Segoe UI', Tahoma, Verdana, sans-serif;
+  font-size: 3rem;
+
+  text-transform: uppercase;
+  text-align: center;
+
+  color: white;
+}
