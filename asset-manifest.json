@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/mem-meter/static/css/main.073c9b0a.css",
-    "main.js": "/mem-meter/static/js/main.937f62fa.js",
+    "main.js": "/mem-meter/static/js/main.7b63e57a.js",
     "index.html": "/mem-meter/index.html",
     "main.073c9b0a.css.map": "/mem-meter/static/css/main.073c9b0a.css.map",
-    "main.937f62fa.js.map": "/mem-meter/static/js/main.937f62fa.js.map"
+    "main.7b63e57a.js.map": "/mem-meter/static/js/main.7b63e57a.js.map"
   },
   "entrypoints": [
     "static/css/main.073c9b0a.css",
-    "static/js/main.937f62fa.js"
+    "static/js/main.7b63e57a.js"
   ]
 }
