@@ -1,8 +1,10 @@
 import './styles/general.css';
 import './styles/card.css';
-import { useState, useEffect } from 'react';
+import './styles/loader.css';
+import React, { useState, useEffect } from 'react';
 import { PokeCard } from './components/Pokemon';
 import { Random } from './lib/Random';
+import { Loader } from './components/Loader';
 
 // Figure out service worker installation
 // const Pokedex = require('pokeapi-js-wrapper');
@@ -21,8 +23,10 @@ function App() {
       async function fetchPoke() {
         let name, source;
         try {
+          // Ensure no duplicate pokemon appear!
+          const pokeID = Random.getRandomInt(1, 905);
           const pokeResponse = await fetch(
-            `https://pokeapi.co/api/v2/pokemon/${Random.getRandomInt(1, 905)}/`
+            `https://pokeapi.co/api/v2/pokemon/${pokeID}/`
           );
           const pokeResponseJSON = await pokeResponse.json();
 
@@ -66,10 +70,17 @@ function App() {
 
       <div className="poke-cards">
         {console.log('In render call:', pokeArray)}
+
+        {/* THE FOLLOWING React.Suspense is not working... */}
+        {/* <React.Suspense fallback={<div className="load-text">HELOOOOO</div>}>
+          {pokeArray.map((poke, i) => (
+            <PokeCard sourceURL={poke.source} caption={poke.name} key={i} />
+          ))}
+        </React.Suspense> */}
+
         {(() => {
           if (pokeArray.length === 0) {
-            console.log('NONETHING');
-            return <h2 className="load-text">Loading...</h2>;
+            return <Loader />;
           } else {
             return pokeArray.map((poke, i) => (
               <PokeCard sourceURL={poke.source} caption={poke.name} key={i} />

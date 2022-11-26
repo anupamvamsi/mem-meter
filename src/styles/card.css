@@ -33,6 +33,15 @@
   background-color: rgb(255, 255, 73);
 }
 
+.poke-card:hover {
+  cursor: pointer;
+
+  transition: all 0.09s ease;
+  transform: scale(1.05);
+
+  /* box-shadow: 0em 0.6em 0em rgb(255, 255, 155); */
+}
+
 .pc-image {
   width: 12em;
 }
