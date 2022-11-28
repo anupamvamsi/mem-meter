@@ -3,9 +3,12 @@ export function Loader(props) {
   // Slightly tweaked from the original (Tweaks are in the CSS)
   // https://codepen.io/vinztt/pen/XjEyvZ
   return (
-    <div className="wrapper">
-      <div className="pokeball"></div>
-    </div>
+    <>
+      <div className="wrapper">
+        <div className="pokeball"></div>
+      </div>
+      <h2 className="load-text">Loading</h2>
+    </>
   );
 
   // return (

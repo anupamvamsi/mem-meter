@@ -13,6 +13,14 @@
   justify-content: center;
   align-items: center;
 
+  /* "Loading" text position */
+  position: absolute;
+  top: 55%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+  /* ------- */
+
   font-size: 2rem;
 
   text-align: center;
@@ -35,11 +43,10 @@
 
 .poke-card:hover {
   cursor: pointer;
+  opacity: 0.85;
 
   transition: all 0.09s ease;
   transform: scale(1.05);
-
-  /* box-shadow: 0em 0.6em 0em rgb(255, 255, 155); */
 }
 
 .pc-image {
