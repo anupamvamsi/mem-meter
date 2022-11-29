@@ -66,6 +66,9 @@ function App() {
 
         // Triggers re-render on every change of state
         setPokeArray(initArray);
+
+        // Reset / Ensure clickedPokeCards is empty
+        setClickedPokeCards([]);
         console.info(
           'setState (pokeArray to initArray) - triggering re-render'
         );
@@ -83,8 +86,15 @@ function App() {
     const clickedCard = e.currentTarget;
 
     // Track clicked cards
-    setClickedPokeCards(clickedPokeCards.concat(clickedCard));
     console.info('setState (clickedArray) - triggering re-render');
+    console.log('clickedCard: ', clickedCard, clickedPokeCards);
+
+    const present = clickedPokeCards.find((card) => card === clickedCard);
+    if (!present) {
+      setClickedPokeCards(clickedPokeCards.concat(clickedCard));
+    } else {
+      alert('Game over!');
+    }
   }
 
   // Event listener to randomize cards
