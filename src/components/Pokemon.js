@@ -1,6 +1,12 @@
 export function PokeCard(props) {
   return (
-    <div className="poke-card" onClick={props.randomizeCards}>
+    <div
+      className="poke-card"
+      onClick={(e) => {
+        props.clickTracker(e);
+        props.randomizeCards(e);
+      }}
+    >
       <img className="pc-image" src={props.sourceURL} alt={props.caption} />
       <p className="pc-caption">{props.caption}</p>
     </div>

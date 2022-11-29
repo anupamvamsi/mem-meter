@@ -25,13 +25,13 @@ function App() {
   useEffect(
     () => {
       // Called on first mount
-      console.log('mounted / rendered');
+      console.info('mounted / rendered');
 
       async function fetchPoke() {
         let name, source;
         try {
-          // Ensure no duplicate pokemon appear!
           const pokeID = Random.getRandomInt(1, 905);
+
           const pokeResponse = await fetch(
             `https://pokeapi.co/api/v2/pokemon/${pokeID}/`
           );
@@ -53,12 +53,22 @@ function App() {
         for (let i = 0; i < NUM_POKE_IN_CURR_ROUND; i++) {
           const poke = await fetchPoke();
           // console.log(poke);
+
+          // CHECK FOR DUPLICATES
+          const isDuplicate = initArray.find((p) => p.name === poke.name);
+          if (isDuplicate) {
+            i--;
+            continue;
+          }
+
           initArray.push(poke);
         }
 
         // Triggers re-render on every change of state
         setPokeArray(initArray);
-        console.log('setState (pokeArray to initArray) - triggering re-render');
+        console.info(
+          'setState (pokeArray to initArray) - triggering re-render'
+        );
       }
 
       fetchMultiplePoke();
@@ -69,14 +79,16 @@ function App() {
     []
   );
 
-  // Event listener to randomize cards
-  function randomizeCards(e) {
+  function clickTracker(e) {
     const clickedCard = e.currentTarget;
 
     // Track clicked cards
     setClickedPokeCards(clickedPokeCards.concat(clickedCard));
-    console.log('setState (clickedArray) - triggering re-render');
+    console.info('setState (clickedArray) - triggering re-render');
+  }
 
+  // Event listener to randomize cards
+  function randomizeCards(e) {
     /////////////////////////////////////////////////////////////////////
     // RANDOMIZATION ////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -139,19 +151,21 @@ function App() {
     // console.log('//////////////////// equal');
 
     setPokeArray(randomizedPokeArray);
-    console.log(
+    console.info(
       'setState (pokeArray to randomizedArray) - triggering re-render'
     );
   }
 
   // Called on every render
-  console.log('mounting... / rendering...');
+  console.info('mounting... / rendering...');
   return (
     <div className="App">
       <h1 className="title">Mem-Meter</h1>
 
       <div className="poke-cards">
-        {console.log('In render call:', pokeArray)}
+        {console.info('In render call:', pokeArray)}
+        {console.info('//////////////////// end render\n')}
+        {console.log()}
 
         {/* THE FOLLOWING React.Suspense IS NOT WORKING... */}
         {/* <React.Suspense fallback={<div className="load-text">HELOOOOO</div>}>
@@ -170,6 +184,8 @@ function App() {
                 caption={poke.name}
                 key={poke.name}
                 randomizeCards={randomizeCards}
+                clickTracker={clickTracker}
+                // separate calls of randomizeCards and clickTracker
               />
             ));
           }
