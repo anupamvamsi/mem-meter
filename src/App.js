@@ -37,7 +37,7 @@ function App() {
           );
           const pokeResponseJSON = await pokeResponse.json();
 
-          name = await pokeResponseJSON.name;
+          name = await pokeResponseJSON.species.name;
           source = await pokeResponseJSON.sprites.other['official-artwork']
             .front_default;
         } catch {
