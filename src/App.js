@@ -174,7 +174,7 @@ function App() {
 
       <div className="poke-cards">
         {console.info('In render call:', pokeArray)}
-        {console.info('//////////////////// end render\n')}
+        {console.log('//////////////////// end render\n')}
         {console.log()}
 
         {/* THE FOLLOWING React.Suspense IS NOT WORKING... */}
@@ -193,6 +193,7 @@ function App() {
                 sourceURL={poke.source}
                 caption={poke.name}
                 key={poke.name}
+                count={i}
                 randomizeCards={randomizeCards}
                 clickTracker={clickTracker}
                 // separate calls of randomizeCards and clickTracker

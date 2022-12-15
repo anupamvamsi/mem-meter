@@ -4,10 +4,14 @@ export function Loader(props) {
   // https://codepen.io/vinztt/pen/XjEyvZ
   return (
     <>
-      <div className="wrapper">
+      <div className={props.className || 'wrapper'}>
         <div className="pokeball"></div>
       </div>
-      <h2 className="load-text">Loading</h2>
+      {(() => {
+        if (!props.className) {
+          return <h2 className="load-text">Loading</h2>;
+        }
+      })()}
     </>
   );
 

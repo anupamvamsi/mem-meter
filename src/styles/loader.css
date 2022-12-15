@@ -1,6 +1,7 @@
 /* CREDITS: Vincenzo Bianco */
 /* Slight tweaks from the original */
 /* https://codepen.io/vinztt/pen/XjEyvZ */
+
 .wrapper {
   position: absolute;
   top: 50%;
@@ -40,6 +41,45 @@
   border-radius: 50%;
   bottom: 18px;
   right: 18px;
+  z-index: 1;
+}
+
+.fallback-wrapper {
+  position: relative;
+  top: 30%;
+}
+
+.fallback-wrapper > .pokeball {
+  width: 30px;
+  height: 30px;
+  background-color: #fff;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  border: 1.5px solid;
+  animation: frames 0.8s linear 0s infinite;
+}
+
+.fallback-wrapper > .pokeball::after {
+  content: '';
+  position: absolute;
+  width: 30px;
+  height: 15px;
+  background-color: red;
+  border-bottom: 2px solid;
+  top: -0.5px;
+}
+
+.fallback-wrapper > .pokeball:before {
+  content: '';
+  position: absolute;
+  background-color: #fff;
+  width: 9px;
+  height: 9px;
+  border: 2px solid;
+  border-radius: 50%;
+  bottom: 9px;
+  right: 9px;
   z-index: 1;
 }
 
