@@ -1,10 +1,12 @@
 import './styles/general.css';
 import './styles/card.css';
 import './styles/loader.css';
+import './styles/modal.css';
 import React, { useState, useEffect } from 'react';
 import { PokeCard } from './components/Pokemon';
 import { Random } from './lib/Random';
 import { Loader } from './components/Loader';
+import { Modal } from './components/Modal';
 
 // Figure out service worker installation
 // const Pokedex = require('pokeapi-js-wrapper');
@@ -19,6 +21,7 @@ const NUM_CHANGE_IN_POSITIONS =
 function App() {
   const [pokeArray, setPokeArray] = useState([]);
   const [clickedPokeCards, setClickedPokeCards] = useState([]);
+  const [gameOver, setGameOver] = useState(false);
 
   // useEffect is called once <App/> component
   // has been mounted (componentDidMount)
@@ -93,7 +96,8 @@ function App() {
     if (!present) {
       setClickedPokeCards(clickedPokeCards.concat(clickedCard));
     } else {
-      alert('Game over!');
+      // alert('Game over!');
+      setGameOver(true);
     }
   }
 
@@ -188,17 +192,22 @@ function App() {
           if (pokeArray.length === 0) {
             return <Loader />;
           } else {
-            return pokeArray.map((poke, i) => (
-              <PokeCard
-                sourceURL={poke.source}
-                caption={poke.name}
-                key={poke.name}
-                count={i}
-                randomizeCards={randomizeCards}
-                clickTracker={clickTracker}
-                // separate calls of randomizeCards and clickTracker
-              />
-            ));
+            return (
+              <>
+                <Modal show={gameOver} />
+                {pokeArray.map((poke, i) => (
+                  <PokeCard
+                    sourceURL={poke.source}
+                    caption={poke.name}
+                    key={poke.name}
+                    count={i}
+                    randomizeCards={randomizeCards}
+                    clickTracker={clickTracker}
+                    // separate calls of randomizeCards and clickTracker
+                  />
+                ))}
+              </>
+            );
           }
         })()}
       </div>
