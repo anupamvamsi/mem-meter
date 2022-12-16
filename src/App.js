@@ -12,13 +12,15 @@ import { Modal } from './components/Modal';
 // const Pokedex = require('pokeapi-js-wrapper');
 // INSTEAD SAVE AND SERVE FIRST 30 POKEMON FROM YOUR OWN SITE PAGE? no point of API then, just take a random offset and fetch 30 pokemon?
 const NUM_POKE_MAX_FOR_GAME = 10;
-let NUM_POKE_IN_CURR_ROUND = 4;
 
 const ALLOWED_NUM_OF_SAME_POSITIONS = 0;
-const NUM_CHANGE_IN_POSITIONS =
-  NUM_POKE_IN_CURR_ROUND - ALLOWED_NUM_OF_SAME_POSITIONS;
 
 function App() {
+  const [numPokeCurrRound, setNumPokeCurrRound] = useState(4);
+  const [numChangeInPositions, setNumChangeInPositions] = useState(
+    numPokeCurrRound - ALLOWED_NUM_OF_SAME_POSITIONS
+  );
+
   const [pokeArray, setPokeArray] = useState([]);
   const [clickedPokeCards, setClickedPokeCards] = useState([]);
   const [gameOver, setGameOver] = useState(false);
@@ -45,8 +47,18 @@ function App() {
   }
 
   async function fetchMultiplePoke() {
-    const initArray = [];
-    for (let i = 0; i < NUM_POKE_IN_CURR_ROUND; i++) {
+    let initArray;
+    if (pokeArray.length === NUM_POKE_MAX_FOR_GAME) {
+      initArray = [];
+    } else {
+      initArray = pokeArray;
+    }
+
+    for (
+      let i = initArray.length;
+      i < numPokeCurrRound && numPokeCurrRound <= NUM_POKE_MAX_FOR_GAME;
+      i++
+    ) {
       const poke = await fetchPoke();
       // console.log(poke);
 
@@ -62,6 +74,7 @@ function App() {
 
     // Triggers re-render on every change of state
     setPokeArray(initArray);
+    randomizeCards();
 
     // Reset / Ensure clickedPokeCards is empty
     setClickedPokeCards([]);
@@ -80,15 +93,41 @@ function App() {
     // Empty array is given to run the useEffect function, i.e.,
     // fetchPoke() only once.
     // https://stackoverflow.com/questions/53120972/how-to-call-loading-function-with-react-useeffect-only-once/53121021#53121021
-    []
+    [numPokeCurrRound]
   );
+
+  useEffect(() => {
+    console.log('clickedCard 2: ', clickedPokeCards);
+
+    function didWin() {
+      console.log('SAME LENGTH!!!', numPokeCurrRound);
+      if (numPokeCurrRound < NUM_POKE_MAX_FOR_GAME) {
+        setNumPokeCurrRound(numPokeCurrRound + 2);
+      }
+      setNumChangeInPositions(numPokeCurrRound - ALLOWED_NUM_OF_SAME_POSITIONS);
+      console.log(numPokeCurrRound);
+    }
+
+    if (
+      pokeArray.length > 0 &&
+      clickedPokeCards.length === NUM_POKE_MAX_FOR_GAME
+    ) {
+      alert('YOU WIN!');
+      setGameOver(true);
+      // setNumPokeCurrRound(4);
+    }
+
+    if (pokeArray.length > 0 && clickedPokeCards.length === pokeArray.length) {
+      didWin();
+    }
+  }, [clickedPokeCards]);
 
   function clickTracker(e) {
     const clickedCard = e.currentTarget;
 
     // Track clicked cards
     console.info('setState (clickedArray) - triggering re-render');
-    console.log('clickedCard: ', clickedCard, clickedPokeCards);
+    console.log('clickedCard 1: ', clickedCard, clickedPokeCards);
 
     const present = clickedPokeCards.find((card) => card === clickedCard);
     if (!present) {
@@ -137,9 +176,9 @@ function App() {
     // Array to check against, for successful randomization
     const oldPos = origPokeArray.map((poke) => poke);
 
-    for (let i = 0; i < NUM_POKE_IN_CURR_ROUND; i++) {
-      const randomIdx1 = Random.getRandomInt(0, NUM_POKE_IN_CURR_ROUND - 1 - i);
-      const randomIdx2 = Random.getRandomInt(0, NUM_POKE_IN_CURR_ROUND);
+    for (let i = 0; i < numPokeCurrRound; i++) {
+      const randomIdx1 = Random.getRandomInt(0, numPokeCurrRound - 1 - i);
+      const randomIdx2 = Random.getRandomInt(0, numPokeCurrRound);
 
       // Remove ONE (1) element from randomIdx1
       const extractedPoke = origPokeArray.splice(randomIdx1, 1)[0];
@@ -157,7 +196,10 @@ function App() {
     //   checkArray
     // );
 
-    if (checkArray.length < NUM_CHANGE_IN_POSITIONS) {
+    // 'e' is undefined when called in fetchMultiplePoke() call.
+    // ONLY IF 'e' is defined, you can call randomizeCards(e) recursively.
+    // ELSE, it results in infinite recursion!
+    if (e && checkArray.length < numChangeInPositions) {
       return randomizeCards(e);
     }
     // console.log('//////////////////// equal');
@@ -195,11 +237,21 @@ function App() {
                 <Modal
                   show={gameOver}
                   retry={() => {
-                    setPokeArray([]);
-                    setGameOver(false);
-                    fetchMultiplePoke();
+                    if (pokeArray.length > 4) {
+                      setPokeArray([]);
+                      setGameOver(false);
+                      setNumPokeCurrRound(4);
+                      setClickedPokeCards([]);
+                    }
+                  }}
+                  exit={() => {
+                    window.close();
                   }}
                 />
+                {/* {console.log(
+                  'SAAAAAAAMEEEEEE',
+                  clickedPokeCards.length === pokeArray.length
+                )} */}
                 {pokeArray.map((poke, i) => (
                   <PokeCard
                     sourceURL={poke.source}
