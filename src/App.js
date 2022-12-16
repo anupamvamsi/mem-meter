@@ -12,11 +12,11 @@ import { Modal } from './components/Modal';
 // const Pokedex = require('pokeapi-js-wrapper');
 // INSTEAD SAVE AND SERVE FIRST 30 POKEMON FROM YOUR OWN SITE PAGE? no point of API then, just take a random offset and fetch 30 pokemon?
 const NUM_POKE_MAX_FOR_GAME = 10;
-
+const NUM_BASE_POKE = 4;
 const ALLOWED_NUM_OF_SAME_POSITIONS = 0;
 
 function App() {
-  const [numPokeCurrRound, setNumPokeCurrRound] = useState(4);
+  const [numPokeCurrRound, setNumPokeCurrRound] = useState(NUM_BASE_POKE);
   const [numChangeInPositions, setNumChangeInPositions] = useState(
     numPokeCurrRound - ALLOWED_NUM_OF_SAME_POSITIONS
   );
@@ -60,7 +60,7 @@ function App() {
       i++
     ) {
       const poke = await fetchPoke();
-      // console.log(poke);
+      console.log(poke);
 
       // CHECK FOR DUPLICATES
       const isDuplicate = initArray.find((p) => p.name === poke.name);
@@ -88,13 +88,18 @@ function App() {
       // Called on first mount
       console.info('mounted / rendered');
 
+      setNumChangeInPositions(numPokeCurrRound - ALLOWED_NUM_OF_SAME_POSITIONS);
       fetchMultiplePoke();
     },
     // Empty array is given to run the useEffect function, i.e.,
     // fetchPoke() only once.
     // https://stackoverflow.com/questions/53120972/how-to-call-loading-function-with-react-useeffect-only-once/53121021#53121021
-    [numPokeCurrRound]
+    [numPokeCurrRound, gameOver]
   );
+
+  // useEffect(() => {
+  //   fetchMultiplePoke();
+  // }, [gameOver]);
 
   useEffect(() => {
     console.log('clickedCard 2: ', clickedPokeCards);
@@ -104,7 +109,6 @@ function App() {
       if (numPokeCurrRound < NUM_POKE_MAX_FOR_GAME) {
         setNumPokeCurrRound(numPokeCurrRound + 2);
       }
-      setNumChangeInPositions(numPokeCurrRound - ALLOWED_NUM_OF_SAME_POSITIONS);
       console.log(numPokeCurrRound);
     }
 
@@ -237,10 +241,13 @@ function App() {
                 <Modal
                   show={gameOver}
                   retry={() => {
-                    if (pokeArray.length > 4) {
+                    if (pokeArray.length >= NUM_BASE_POKE) {
                       setPokeArray([]);
                       setGameOver(false);
-                      setNumPokeCurrRound(4);
+                      setNumPokeCurrRound(NUM_BASE_POKE);
+                      setNumChangeInPositions(
+                        NUM_BASE_POKE - ALLOWED_NUM_OF_SAME_POSITIONS
+                      );
                       setClickedPokeCards([]);
                     }
                   }}
