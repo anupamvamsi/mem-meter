@@ -23,59 +23,57 @@ function App() {
   const [clickedPokeCards, setClickedPokeCards] = useState([]);
   const [gameOver, setGameOver] = useState(false);
 
+  async function fetchPoke() {
+    let name, source;
+    try {
+      const pokeID = Random.getRandomInt(1, 905);
+
+      const pokeResponse = await fetch(
+        `https://pokeapi.co/api/v2/pokemon/${pokeID}/`
+      );
+      const pokeResponseJSON = await pokeResponse.json();
+
+      name = await pokeResponseJSON.species.name;
+      source = await pokeResponseJSON.sprites.other['official-artwork']
+        .front_default;
+    } catch {
+      name = '???';
+      source = ''; // put a source of ??? Pokemon
+    }
+
+    return { name, source };
+  }
+
+  async function fetchMultiplePoke() {
+    const initArray = [];
+    for (let i = 0; i < NUM_POKE_IN_CURR_ROUND; i++) {
+      const poke = await fetchPoke();
+      // console.log(poke);
+
+      // CHECK FOR DUPLICATES
+      const isDuplicate = initArray.find((p) => p.name === poke.name);
+      if (isDuplicate) {
+        i--;
+        continue;
+      }
+
+      initArray.push(poke);
+    }
+
+    // Triggers re-render on every change of state
+    setPokeArray(initArray);
+
+    // Reset / Ensure clickedPokeCards is empty
+    setClickedPokeCards([]);
+    console.info('setState (pokeArray to initArray) - triggering re-render');
+  }
+
   // useEffect is called once <App/> component
   // has been mounted (componentDidMount)
   useEffect(
     () => {
       // Called on first mount
       console.info('mounted / rendered');
-
-      async function fetchPoke() {
-        let name, source;
-        try {
-          const pokeID = Random.getRandomInt(1, 905);
-
-          const pokeResponse = await fetch(
-            `https://pokeapi.co/api/v2/pokemon/${pokeID}/`
-          );
-          const pokeResponseJSON = await pokeResponse.json();
-
-          name = await pokeResponseJSON.species.name;
-          source = await pokeResponseJSON.sprites.other['official-artwork']
-            .front_default;
-        } catch {
-          name = '???';
-          source = ''; // put a source of ??? Pokemon
-        }
-
-        return { name, source };
-      }
-
-      async function fetchMultiplePoke() {
-        const initArray = [];
-        for (let i = 0; i < NUM_POKE_IN_CURR_ROUND; i++) {
-          const poke = await fetchPoke();
-          // console.log(poke);
-
-          // CHECK FOR DUPLICATES
-          const isDuplicate = initArray.find((p) => p.name === poke.name);
-          if (isDuplicate) {
-            i--;
-            continue;
-          }
-
-          initArray.push(poke);
-        }
-
-        // Triggers re-render on every change of state
-        setPokeArray(initArray);
-
-        // Reset / Ensure clickedPokeCards is empty
-        setClickedPokeCards([]);
-        console.info(
-          'setState (pokeArray to initArray) - triggering re-render'
-        );
-      }
 
       fetchMultiplePoke();
     },
@@ -194,7 +192,14 @@ function App() {
           } else {
             return (
               <>
-                <Modal show={gameOver} />
+                <Modal
+                  show={gameOver}
+                  retry={() => {
+                    setPokeArray([]);
+                    setGameOver(false);
+                    fetchMultiplePoke();
+                  }}
+                />
                 {pokeArray.map((poke, i) => (
                   <PokeCard
                     sourceURL={poke.source}
