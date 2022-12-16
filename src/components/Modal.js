@@ -11,7 +11,9 @@ export function Modal(props) {
           <button className="modal-text" onClick={props.retry}>
             Retry?
           </button>
-          <button className="modal-text exit">Exit</button>
+          {/* <button className="modal-text exit" onClick={props.exit}>
+            Exit
+          </button> */}
         </div>
       </div>
     </div>
