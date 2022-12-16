@@ -15,6 +15,8 @@ const NUM_POKE_MAX_FOR_GAME = 10;
 const NUM_BASE_POKE = 4;
 const ALLOWED_NUM_OF_SAME_POSITIONS = 0;
 
+const rootElement = document.querySelector(':root');
+
 function App() {
   const [numPokeCurrRound, setNumPokeCurrRound] = useState(NUM_BASE_POKE);
   const [numChangeInPositions, setNumChangeInPositions] = useState(
@@ -81,6 +83,10 @@ function App() {
     console.info('setState (pokeArray to initArray) - triggering re-render');
   }
 
+  function setCols() {
+    rootElement.style.setProperty('--cols', numPokeCurrRound / 2);
+  }
+
   // useEffect is called once <App/> component
   // has been mounted (componentDidMount)
   useEffect(
@@ -89,6 +95,7 @@ function App() {
       console.info('mounted / rendered');
 
       setNumChangeInPositions(numPokeCurrRound - ALLOWED_NUM_OF_SAME_POSITIONS);
+      setCols();
       fetchMultiplePoke();
     },
     // Empty array is given to run the useEffect function, i.e.,

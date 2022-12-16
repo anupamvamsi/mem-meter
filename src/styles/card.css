@@ -1,11 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;600;700&display=swap');
 
+:root {
+  --cols: 2;
+}
+
 .poke-cards {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   gap: 1em;
+
+  max-width: calc(17em * var(--cols));
 }
 
 .load-text {
