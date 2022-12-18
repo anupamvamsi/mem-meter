@@ -6,14 +6,11 @@ export function Modal(props) {
   return (
     <div className="modal-container">
       <div className="modal">
-        <h2 className="modal-title">Game Over!</h2>
+        <h2 className="modal-title">Game {props.result}!</h2>
         <div className="modal-choices">
           <button className="modal-text" onClick={props.retry}>
             Retry?
           </button>
-          {/* <button className="modal-text exit" onClick={props.exit}>
-            Exit
-          </button> */}
         </div>
       </div>
     </div>
