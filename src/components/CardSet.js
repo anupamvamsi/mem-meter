@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { fetchPoke } from '../lib/utils';
 import { Random } from '../lib/Random';
 import { PokeCard } from './Pokemon';
 import { Loader } from './Loader';
@@ -7,8 +8,6 @@ import { ALLOWEDPOS, POKEBASE, POKEMAX, setCols } from '../lib/constants';
 
 // Figure out service worker installation
 // const Pokedex = require('pokeapi-js-wrapper');
-// const POKEMAX = 6; const POKEBASE = 2;
-// const ALLOWEDPOS = 0;
 
 export function CardSet(props) {
   const [numPokeCurrRound, setNumPokeCurrRound] = useState(POKEBASE);
@@ -22,28 +21,11 @@ export function CardSet(props) {
   const [gameWin, setGameWin] = useState(false);
   const [gameOver, setGameOver] = useState(false);
 
-  async function fetchPoke() {
-    let name, source;
-    try {
-      const pokeID = Random.getRandomInt(1, 905);
-
-      const pokeResponse = await fetch(
-        `https://pokeapi.co/api/v2/pokemon/${pokeID}/`
-      );
-      const pokeResponseJSON = await pokeResponse.json();
-
-      name = await pokeResponseJSON.species.name;
-      source = await pokeResponseJSON.sprites.other['official-artwork']
-        .front_default;
-    } catch {
-      name = '???';
-      source = ''; // put a source of ??? Pokemon
-    }
-
-    return { name, source };
-  }
+  const [fetchState, setFetchState] = useState(true);
 
   async function fetchMultiplePoke() {
+    setFetchState(true);
+
     let initArray;
     if (pokeArray.length === POKEMAX) {
       initArray = [];
@@ -76,6 +58,8 @@ export function CardSet(props) {
     // Reset / Ensure clickedPokeCards is empty
     setClickedPokeCards([]);
     console.info('setState (pokeArray to initArray) - triggering re-render');
+
+    setFetchState(false);
   }
 
   // useEffect is called once <App/> component
@@ -87,7 +71,10 @@ export function CardSet(props) {
 
       setNumChangeInPositions(numPokeCurrRound - ALLOWEDPOS);
       setCols(numPokeCurrRound);
-      fetchMultiplePoke();
+
+      if (!gameOver) {
+        fetchMultiplePoke();
+      }
     },
     // Empty array is given to run the useEffect function, i.e.,
     // fetchPoke() only once.
@@ -107,7 +94,7 @@ export function CardSet(props) {
     }
 
     if (pokeArray.length > 0 && clickedPokeCards.length === POKEMAX) {
-      alert('YOU WIN!');
+      // alert('YOU WIN!');
       setGameOver(true);
       setGameWin(true);
     }
@@ -208,7 +195,7 @@ export function CardSet(props) {
       {console.log()}
 
       {(() => {
-        if (pokeArray.length === 0) {
+        if (fetchState === true) {
           return <Loader />;
         } else {
           return (
@@ -221,13 +208,11 @@ export function CardSet(props) {
                     setPokeArray([]);
                     setGameOver(false);
                     setGameWin(false);
+                    setFetchState(true);
                     setNumPokeCurrRound(POKEBASE);
                     setNumChangeInPositions(POKEBASE - ALLOWEDPOS);
                     setClickedPokeCards([]);
                   }
-                }}
-                exit={() => {
-                  window.close();
                 }}
               />
               {pokeArray.map((poke, i) => (
