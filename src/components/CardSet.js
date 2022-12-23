@@ -39,7 +39,7 @@ export function CardSet(props) {
       i++
     ) {
       const poke = await fetchPoke();
-      console.log(poke);
+      // console.log(poke);
 
       // CHECK FOR DUPLICATES
       const isDuplicate = initArray.find((p) => p.name === poke.name);
@@ -57,7 +57,7 @@ export function CardSet(props) {
 
     // Reset / Ensure clickedPokeCards is empty
     setClickedPokeCards([]);
-    console.info('setState (pokeArray to initArray) - triggering re-render');
+    // console.info('setState (pokeArray to initArray) - triggering re-render');
 
     setFetchState(false);
   }
@@ -67,7 +67,7 @@ export function CardSet(props) {
   useEffect(
     () => {
       // Called on first mount
-      console.info('mounted / rendered');
+      // console.info('mounted / rendered');
 
       setNumChangeInPositions(numPokeCurrRound - ALLOWEDPOS);
       setCols(numPokeCurrRound);
@@ -83,14 +83,14 @@ export function CardSet(props) {
   );
 
   useEffect(() => {
-    console.log('clickedCard 2: ', clickedPokeCards);
+    // console.log('clickedCard 2: ', clickedPokeCards);
 
     function didWin() {
-      console.log('SAME LENGTH!!!', numPokeCurrRound);
+      // console.log('SAME LENGTH!!!', numPokeCurrRound);
       if (numPokeCurrRound < POKEMAX) {
         setNumPokeCurrRound(numPokeCurrRound + 2);
       }
-      console.log(numPokeCurrRound);
+      // console.log(numPokeCurrRound);
     }
 
     if (pokeArray.length > 0 && clickedPokeCards.length === POKEMAX) {
@@ -108,8 +108,8 @@ export function CardSet(props) {
     const clickedCard = e.currentTarget;
 
     // Track clicked cards
-    console.info('setState (clickedArray) - triggering re-render');
-    console.log('clickedCard 1: ', clickedCard, clickedPokeCards);
+    // console.info('setState (clickedArray) - triggering re-render');
+    // console.log('clickedCard 1: ', clickedCard, clickedPokeCards);
 
     const present = clickedPokeCards.find((card) => card === clickedCard);
     if (!present) {
@@ -181,18 +181,18 @@ export function CardSet(props) {
     // console.log('//////////////////// equal');
 
     setPokeArray(randomizedPokeArray);
-    console.info(
-      'setState (pokeArray to randomizedArray) - triggering re-render'
-    );
+    // console.info(
+    // 'setState (pokeArray to randomizedArray) - triggering re-render'
+    // );
   }
 
   // Called on every render
-  console.info('mounting... / rendering...');
+  // console.info('mounting... / rendering...');
   return (
     <div className="poke-cards">
-      {console.info('In render call:', pokeArray)}
-      {console.log('//////////////////// end render\n')}
-      {console.log()}
+      {/* {console.info('In render call:', pokeArray)} */}
+      {/* {console.log('//////////////////// end render\n')} */}
+      {/* {console.log()} */}
 
       {(() => {
         if (fetchState === true) {

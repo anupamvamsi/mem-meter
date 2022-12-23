@@ -3,7 +3,7 @@ import { Img } from 'react-image';
 import { Loader } from './Loader';
 
 function ImgComponent(props) {
-  console.info('imgComp:', props.sourceURL);
+  // console.info('imgComp:', props.sourceURL);
 
   const altErrorMsg = `Couldn't load image of ${props.caption}`;
 
