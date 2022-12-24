@@ -8,7 +8,7 @@
 
 body {
   display: grid;
-  justify-content: center;
+  justify-items: center;
   align-items: center;
 
   font-family: 'Mukta', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -16,11 +16,39 @@ body {
 }
 
 .App {
-  display: flex;
-  flex-direction: column;
-
-  justify-content: center;
+  justify-items: center;
   align-items: center;
+}
+
+.round {
+  position: relative;
+  top: 30%;
+  left: -20%;
+  margin: 0;
+
+  text-align: center;
+  text-transform: uppercase;
+
+  font-family: 'Days One', 'Segoe UI', Tahoma, Verdana, sans-serif;
+  color: white;
+
+  height: fit-content;
+}
+
+.round-txt {
+  position: relative;
+  top: 40px;
+}
+
+.round-txt,
+.round-num {
+  margin: 0;
+}
+
+.round-num {
+  font-size: 12rem;
+
+  color: crimson;
 }
 
 .title,
@@ -35,6 +63,7 @@ body {
   text-transform: uppercase;
   text-align: center;
 
+  margin-top: 0em;
   margin-bottom: 0;
 
   color: white;
@@ -43,5 +72,10 @@ body {
 .desc {
   font-size: 1rem;
 
-  margin: 0 0 1em 0;
+  margin: 0 0 2em 0em;
+}
+
+.highlight {
+  white-space: pre;
+  color: crimson;
 }

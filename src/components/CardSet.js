@@ -11,6 +11,7 @@ import {
   POKEMAX,
   setCols,
 } from '../lib/constants';
+import { Round } from './Round';
 
 // Figure out service worker installation
 // const Pokedex = require('pokeapi-js-wrapper');
@@ -81,7 +82,6 @@ export function CardSet(props) {
 
       if (!gameOver) {
         fetchMultiplePoke();
-        props.roundRef.current.textContent = `Round ${roundNum}`;
       }
     },
     // Empty array is given to run the useEffect function, i.e.,
@@ -98,8 +98,6 @@ export function CardSet(props) {
       if (numPokeCurrRound < POKEMAX) {
         setNumPokeCurrRound(numPokeCurrRound + 2);
         setRoundNum(roundNum + 1);
-
-        // console.log(props.roundRef.current.textContent);
       }
       // console.log(numPokeCurrRound);
     }
@@ -200,47 +198,54 @@ export function CardSet(props) {
   // Called on every render
   // console.info('mounting... / rendering...');
   return (
-    <div className="poke-cards">
-      {/* {console.info('In render call:', pokeArray)} */}
-      {/* {console.log('//////////////////// end render\n')} */}
-      {/* {console.log()} */}
-
+    <div className="game-board">
       {(() => {
-        if (fetchState === true) {
-          return <Loader />;
-        } else {
-          return (
-            <>
-              <Modal
-                show={gameOver}
-                result={gameWin ? 'Won' : 'Over'}
-                retry={() => {
-                  if (pokeArray.length >= POKEBASE) {
-                    setPokeArray([]);
-                    setGameOver(false);
-                    setGameWin(false);
-                    setFetchState(true);
-                    setRoundNum(BASEROUND);
-                    setNumPokeCurrRound(POKEBASE);
-                    setNumChangeInPositions(POKEBASE - ALLOWEDPOS);
-                    setClickedPokeCards([]);
-                  }
-                }}
-              />
-              {pokeArray.map((poke, i) => (
-                <PokeCard
-                  sourceURL={poke.source}
-                  caption={poke.name}
-                  key={poke.name}
-                  count={i}
-                  randomizeCards={randomizeCards}
-                  clickTracker={clickTracker}
-                />
-              ))}
-            </>
-          );
+        if (!fetchState) {
+          return <Round roundNum={roundNum} />;
         }
       })()}
+      <div className="poke-cards">
+        {/* {console.info('In render call:', pokeArray)} */}
+        {/* {console.log('//////////////////// end render\n')} */}
+        {/* {console.log()} */}
+
+        {(() => {
+          if (fetchState === true) {
+            return <Loader />;
+          } else {
+            return (
+              <>
+                <Modal
+                  show={gameOver}
+                  result={gameWin ? 'Won' : 'Over'}
+                  retry={() => {
+                    if (pokeArray.length >= POKEBASE) {
+                      setPokeArray([]);
+                      setGameOver(false);
+                      setGameWin(false);
+                      setFetchState(true);
+                      setRoundNum(BASEROUND);
+                      setNumPokeCurrRound(POKEBASE);
+                      setNumChangeInPositions(POKEBASE - ALLOWEDPOS);
+                      setClickedPokeCards([]);
+                    }
+                  }}
+                />
+                {pokeArray.map((poke, i) => (
+                  <PokeCard
+                    sourceURL={poke.source}
+                    caption={poke.name}
+                    key={poke.name}
+                    count={i}
+                    randomizeCards={randomizeCards}
+                    clickTracker={clickTracker}
+                  />
+                ))}
+              </>
+            );
+          }
+        })()}
+      </div>
     </div>
   );
 }
