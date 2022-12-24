@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/mem-meter/static/css/main.8b10bf50.css",
-    "main.js": "/mem-meter/static/js/main.92a46a79.js",
+    "main.css": "/mem-meter/static/css/main.0ee5be9e.css",
+    "main.js": "/mem-meter/static/js/main.31112298.js",
     "index.html": "/mem-meter/index.html",
-    "main.8b10bf50.css.map": "/mem-meter/static/css/main.8b10bf50.css.map",
-    "main.92a46a79.js.map": "/mem-meter/static/js/main.92a46a79.js.map"
+    "main.0ee5be9e.css.map": "/mem-meter/static/css/main.0ee5be9e.css.map",
+    "main.31112298.js.map": "/mem-meter/static/js/main.31112298.js.map"
   },
   "entrypoints": [
-    "static/css/main.8b10bf50.css",
-    "static/js/main.92a46a79.js"
+    "static/css/main.0ee5be9e.css",
+    "static/js/main.31112298.js"
   ]
 }
