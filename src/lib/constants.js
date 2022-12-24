@@ -3,6 +3,7 @@ const POKE_ID_LAST = 905;
 const NUM_POKE_MAX_FOR_GAME = 10;
 const NUM_BASE_POKE = 2;
 const ALLOWED_NUM_OF_SAME_POSITIONS = 0;
+const BASE_ROUND_NUM = 1;
 
 const rootElement = document.querySelector(':root');
 
@@ -20,6 +21,7 @@ export {
   NUM_POKE_MAX_FOR_GAME as POKEMAX,
   NUM_BASE_POKE as POKEBASE,
   ALLOWED_NUM_OF_SAME_POSITIONS as ALLOWEDPOS,
+  BASE_ROUND_NUM as BASEROUND,
   rootElement as ROOT,
   setCols,
 };

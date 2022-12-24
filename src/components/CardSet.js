@@ -4,7 +4,13 @@ import { Random } from '../lib/Random';
 import { PokeCard } from './Pokemon';
 import { Loader } from './Loader';
 import { Modal } from './Modal';
-import { ALLOWEDPOS, POKEBASE, POKEMAX, setCols } from '../lib/constants';
+import {
+  ALLOWEDPOS,
+  BASEROUND,
+  POKEBASE,
+  POKEMAX,
+  setCols,
+} from '../lib/constants';
 
 // Figure out service worker installation
 // const Pokedex = require('pokeapi-js-wrapper');
@@ -14,6 +20,7 @@ export function CardSet(props) {
   const [numChangeInPositions, setNumChangeInPositions] = useState(
     numPokeCurrRound - ALLOWEDPOS
   );
+  const [roundNum, setRoundNum] = useState(BASEROUND);
 
   const [pokeArray, setPokeArray] = useState([]);
   const [clickedPokeCards, setClickedPokeCards] = useState([]);
@@ -74,6 +81,7 @@ export function CardSet(props) {
 
       if (!gameOver) {
         fetchMultiplePoke();
+        props.roundRef.current.textContent = `Round ${roundNum}`;
       }
     },
     // Empty array is given to run the useEffect function, i.e.,
@@ -89,6 +97,9 @@ export function CardSet(props) {
       // console.log('SAME LENGTH!!!', numPokeCurrRound);
       if (numPokeCurrRound < POKEMAX) {
         setNumPokeCurrRound(numPokeCurrRound + 2);
+        setRoundNum(roundNum + 1);
+
+        // console.log(props.roundRef.current.textContent);
       }
       // console.log(numPokeCurrRound);
     }
@@ -209,6 +220,7 @@ export function CardSet(props) {
                     setGameOver(false);
                     setGameWin(false);
                     setFetchState(true);
+                    setRoundNum(BASEROUND);
                     setNumPokeCurrRound(POKEBASE);
                     setNumChangeInPositions(POKEBASE - ALLOWEDPOS);
                     setClickedPokeCards([]);

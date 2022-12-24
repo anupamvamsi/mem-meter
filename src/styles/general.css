@@ -23,16 +23,25 @@ body {
   align-items: center;
 }
 
-.title {
+.title,
+.desc {
   display: flex;
   justify-content: center;
   align-items: center;
 
   font-family: 'Days One', 'Segoe UI', Tahoma, Verdana, sans-serif;
-  font-size: 3rem;
+  font-size: 3.4rem;
 
   text-transform: uppercase;
   text-align: center;
 
+  margin-bottom: 0;
+
   color: white;
+}
+
+.desc {
+  font-size: 1rem;
+
+  margin: 0 0 1em 0;
 }
